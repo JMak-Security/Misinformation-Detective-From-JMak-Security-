@@ -20,6 +20,14 @@ This is the initial stable release of **[Misinformation Detective-v1]**, a priva
 
 ---
 
+### ⏱️ Performance Note for Reviewers
+Because this extension runs 100% locally on your computer to protect data privacy, the processing speed depends directly on your device's hardware hardware (CPU/GPU). 
+- On a high-performance system, the local AI Judge analyzes and responds within a few seconds. 
+- On standard hardware configurations, it can take up to 1-2 minutes to fully generate the structured truth score metrics. 
+- For presentation smoothness, the video demonstration was trimmed to highlight the target UI layout and functional workflow.
+
+---
+
 ## 📋 Local Installation & Deployment
 
 To load this extension framework into your browser:
