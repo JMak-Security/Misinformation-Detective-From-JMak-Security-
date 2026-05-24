@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Judge Dashboard</title>
+  <style>
+    /* =========================================================================
+       1. MODERN DESIGN CORES & VARIABLES
+       ========================================================================= */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-blue-hover: #0ea5e9;
+      --glow-blue: rgba(56, 189, 248, 0.15);
+      
+      /* Verdict Colors */
+      --true-bg: rgba(34, 197, 94, 0.15);
+      --true-text: #4ade80;
+      --true-border: rgba(74, 222, 128, 0.4);
+      
+      --mixed-bg: rgba(234, 179, 8, 0.15);
+      --mixed-text: #facc15;
+      --mixed-border: rgba(250, 204, 21, 0.4);
+      
+      --false-bg: rgba(239, 68, 68, 0.15);
+      --false-text: #f87171;
+      --false-border: rgba(248, 113, 113, 0.4);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg-gradient);
+      color: var(--text-main);
+      padding: 32px 24px;
+      min-height: 100vh;
+      max-width: 540px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      line-height: 1.5;
+    }
+
+    /* =========================================================================
+       2. HEADER ARCHITECTURE
+       ========================================================================= */
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin: 0 0 6px 0;
+      background: linear-gradient(to right, #ffffff, var(--accent-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    /* =========================================================================
+       3. GLASSMORPHIC INTERFACE CARDS
+       ========================================================================= */
+    .panel-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .panel-card:hover {
+      box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.4), 0 0 15px var(--glow-blue);
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .setting-row {
+      margin-bottom: 16px;
+    }
+    .setting-row:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: -3px;
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    /* =========================================================================
+       4. FORMS, CONTROLS & COMPONENT INPUTS
+       ========================================================================= */
+    select, input[type="number"], input[type="text"], input[type="password"], textarea {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 10px;
+      font-size: 14px;
+      padding: 12px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      outline: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    select {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      padding-right: 40px;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 75px;
+      font-family: inherit;
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.1);
+      color: var(--accent-blue);
+      margin-top: 8px;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    /* =========================================================================
+       5. INTERACTIVE COMPONENT BUTTONS & LOADERS
+       ========================================================================= */
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--accent-blue) 0%, #0284c7 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+      margin-top: 6px;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.4);
+      background: linear-gradient(135deg, #7dd3fc 0%, var(--accent-blue-hover) 100%);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button:disabled {
+      background: #334155;
+      color: var(--text-muted);
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* =========================================================================
+       6. LIVE FACTS RUNTIME RESULT CARDS
+       ========================================================================= */
+    #manual-result {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .verdict-box {
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .verdict-Mostly_True { background: var(--true-bg); color: var(--true-text); border: 1px solid var(--true-border); }
+    .verdict-Partially_True, .verdict-Partially_False { background: var(--mixed-bg); color: var(--mixed-text); border: 1px solid var(--mixed-border); }
+    .verdict-Mostly_False { background: var(--false-bg); color: var(--false-text); border: 1px solid var(--false-border); }
+    
+    #result-summary {
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    #status {
+      font-size: 12px;
+      color: var(--true-text);
+      font-weight: 600;
+      text-align: center;
+      height: 16px;
+      margin-top: 12px;
+      letter-spacing: 0.025em;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>AI Judge Control Center</h2>
+    <p>Manage infrastructure parameters and execute independent analytics</p>
+  </header>
+
+  <div class="panel-card" style="border-top: 3px solid var(--accent-blue);">
+    <h3>🔍 Live Fact-Check Terminal</h3>
+    <div class="desc">Paste a specific claim statement or web link below to query empirical context parameters instantly.</div>
+    <div class="setting-row">
+      <textarea id="manualInput" placeholder="Ex: Scientists have found liquid oceans on Mars..."></textarea>
+    </div>
+    <button id="runManualScanBtn">Analyze Target Info</button>
+    
+    <div id="manual-result">
+      <div id="result-verdict" class="verdict-box"></div>
+      <div id="result-summary"></div>
+    </div>
+  </div>
+
+  <div class="panel-card">
+    <h3>🔑 API Credentials Vault</h3>
+    <div class="setting-row">
+      <label class="label" for="serperKey">Serper.dev API Key</label>
+      <div class="desc">Required to fetch Google web search evidence blocks.</div>
+      <input type="password" id="serperKey" placeholder="••••••••••••••••••••••••••••••••">
+    </div>
+    <div class="setting-row">
+      <label class="label">Local Inference Model</label>
+      <div class="desc">Decentralized judge running safely off your machine's hardware.</div>
+      <input type="text" value="Ollama (llama3)" disabled style="opacity: 0.6; cursor: not-allowed;">
+      <div class="status-badge">Target Endpoint: http://127.0.0.1:8080</div>
+    </div>
+  </div>
+  
+  <div class="panel-card">
+    <h3>⚙️ Engine Parameters</h3>
+    <div class="setting-row">
+      <label class="label" for="autoScanState">Automated Page Scanning</label>
+      <div class="desc">When active, the client extension automatically audits headlines as browser windows finish loading.</div>
+      <select id="autoScanState">
+        <option value="enabled">Enabled (Auto-Scan On)</option>
+        <option value="disabled">Disabled (Manual Only)</option>
+      </select>
+    </div>
+
+    <div class="setting-row">
+      <label class="label" for="charLimit">Character Safety Limiter</label>
+      <div class="desc">Sets the maximum text volume extracted on-site to defend processing token pipelines.</div>
+      <input type="number" id="charLimit" min="50" max="500">
+    </div>
+    
+    <div id="status"></div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

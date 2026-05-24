@@ -1,0 +1,140 @@
+/* =========================================================================
+   1. MAIN WIDGET CONTAINER
+   ========================================================================= */
+#ai-judge-badge {
+  position: fixed !important;
+  bottom: 25px !important;
+  right: 25px !important;
+  width: 320px !important;
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.15), 
+              0 8px 16px -6px rgba(0, 0, 0, 0.1) !important;
+  z-index: 2147483647 !important; /* Maximizes layout priority over all webpage elements */
+  padding: 18px !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  color: #1e293b !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* =========================================================================
+   2. HEADER & CONTROL ACTIONS
+   ========================================================================= */
+.ai-judge-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-bottom: 8px !important;
+  padding-bottom: 4px !important;
+}
+
+.ai-judge-title {
+  font-weight: 700 !important;
+  font-size: 11px !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.07em !important;
+}
+
+#ai-judge-status {
+  font-size: 14px !important;
+  color: #64748b !important;
+  font-style: italic !important;
+  margin-top: 6px !important;
+}
+
+.ai-judge-close {
+  cursor: pointer !important;
+  font-size: 22px !important;
+  color: #94a3b8 !important;
+  line-height: 1 !important;
+  font-weight: 300 !important;
+  transition: color 0.15s ease !important;
+}
+
+.ai-judge-close:hover {
+  color: #64748b !important;
+}
+
+/* =========================================================================
+   3. VERDICT DYNAMICS & METERS
+   ========================================================================= */
+.ai-judge-verdict {
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin: 4px 0 !important;
+}
+
+/* Dynamic State Colors */
+.verdict-true { color: #16a34a !important; }   /* Emerald Green */
+.verdict-mixed { color: #ea580c !important; }  /* Amber Orange */
+.verdict-false { color: #dc2626 !important; }  /* Crimson Red */
+.verdict-neutral { color: #64748b !important; }/* Slate Gray */
+
+.ai-judge-meter-container {
+  width: 100% !important;
+  height: 8px !important;
+  background-color: #f1f5f9 !important; /* Fallback gray background tracks the void space */
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+  margin-top: 10px !important;
+  display: flex !important;
+}
+
+.ai-judge-meter {
+  height: 100% !important;
+  background-color: #22c55e !important; /* Green fill moves proportionally to trueRatio */
+  border-radius: 9999px !important;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth animation wrapper */
+}
+
+.ai-judge-ratio {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  color: #475569 !important;
+  margin-top: 6px !important;
+}
+
+/* =========================================================================
+   4. DETAILED AI CONTENT OVERLAY
+   ========================================================================= */
+.ai-judge-summary {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #334155 !important;
+  margin-top: 12px !important;
+  background-color: #f8fafc !important;
+  border: 1px solid #f1f5f9 !important;
+  padding: 10px !important;
+  border-radius: 8px !important;
+}
+
+/* =========================================================================
+   ADDITION: WIDGET CLOSE BUTTON
+   ========================================================================= */
+.ai-judge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.ai-judge-close {
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  color: #94a3b8;
+  line-height: 1;
+  padding: 2px 6px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.ai-judge-close:hover {
+  color: #ef4444;
+  background-color: #f1f5f9;
+}
